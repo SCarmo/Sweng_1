@@ -1,6 +1,6 @@
 #include<stdlib.h>
 #include<stdio.h>
-#define COUNT 69
+#define COUNT 10
 
 struct bin_tree {
 int data;
@@ -29,6 +29,30 @@ void insert(node ** tree, int val)
         insert(&(*tree)->right, val);
     }
 
+}
+
+node *findLCA(node* root, int n1, int n2)
+{
+    // Base case
+    if (root == NULL) return NULL;
+
+    // If either n1 or n2 matches with root's key, report
+    // the presence by returning root (Note that if a key is
+    // ancestor of other, then the ancestor key becomes LCA
+    if (root->data == n1 || root->data == n2)
+        return root;
+
+    // Look for keys in left and right subtrees
+    node *left_lca  = findLCA(root->left, n1, n2);
+    node *right_lca = findLCA(root->right, n1, n2);
+
+    // If both of the above calls return Non-NULL, then one key
+    // is present in once subtree and other is present in other,
+    // So this node is the LCA
+    if (left_lca && right_lca)  return root;
+
+    // Otherwise check if left subtree or right subtree is LCA
+    return (left_lca != NULL)? left_lca: right_lca;
 }
 
 void prettyPrint(node * tree, int space){
@@ -111,5 +135,7 @@ void main()
     insert(&root, 1);
     prettyPrint(root, 0);
     /* Deleting all nodes of tree */
-    //deltree(root);
+
+    printf("LCA(1,17) = %d\n", findLCA(root,1,17)->data);
+    deltree(root);
 }
