@@ -1,6 +1,6 @@
 #include<stdlib.h>
 #include<stdio.h>
-#define COUNT 10
+#define COUNT 69
 
 struct bin_tree {
 int data;
