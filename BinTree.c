@@ -1,6 +1,10 @@
 #include<stdlib.h>
 #include<stdio.h>
+#define CATCH_CONFIG_MAIN  // This tells Catch to provide a main() - only do this in one cpp file
+#include "catch.hpp"
 #define COUNT 10
+
+// compile: g++ BinTree.c -o bin.executed
 
 struct bin_tree {
 int data;
@@ -115,9 +119,7 @@ node* search(node ** tree, int val)
         return *tree;
     }
 }
-
-void main()
-{
+TEST_CASE( "Lowest Common ancestors are computed", "[findLCA]" ) {
     node *root;
     node *tmp;
     //int i;
@@ -133,9 +135,41 @@ void main()
     insert(&root, 17);
     insert(&root, 2);
     insert(&root, 1);
-    prettyPrint(root, 0);
-    /* Deleting all nodes of tree */
+    prettyPrint(root,0);
+    REQUIRE(findLCA(root,1,17)->data == 3);
+    REQUIRE(findLCA(root,12,17)->data == 15);
+    REQUIRE(findLCA(root,12,6)->data == 9);
+    REQUIRE(findLCA(root,3,3)->data == 3);
+    REQUIRE(findLCA(root,1,17)->data == 3);
+    REQUIRE(findLCA(root,1,9)->data == 3);
+    REQUIRE(findLCA(root,9,1)->data == 3);
+    REQUIRE(findLCA(root,15,4)->data == 9);
+    REQUIRE(findLCA(root,1,1)->data == 1);
 
-    printf("LCA(1,17) = %d\n", findLCA(root,1,17)->data);
-    deltree(root);
+    // fail case
+    // REQUIRE(findLCA(root,1,17)->data == 5);
 }
+// int main()
+// {
+//     node *root;
+//     node *tmp;
+//     //int i;
+//
+//     root = NULL;
+//     /* Inserting nodes into tree */
+//     insert(&root, 3);
+//     insert(&root, 9);
+//     insert(&root, 4);
+//     insert(&root, 15);
+//     insert(&root, 6);
+//     insert(&root, 12);
+//     insert(&root, 17);
+//     insert(&root, 2);
+//     insert(&root, 1);
+//     prettyPrint(root, 0);
+//     /* Deleting all nodes of tree */
+//
+//     printf("LCA(1,17) = %d\n", findLCA(root,1,17)->data);
+//     deltree(root);
+//     return 0;
+// }
