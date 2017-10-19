@@ -3,8 +3,7 @@
 #define CATCH_CONFIG_MAIN  // This tells Catch to provide a main() - only do this in one cpp file
 #include "catch.hpp"
 #define COUNT 10
-
-// compile: g++ BinTree.c -o bin.executed
+// compile: g++ BinTree.c -o bin.exe
 
 struct bin_tree {
 int data;
@@ -76,16 +75,6 @@ void prettyPrint(node * tree, int space){
 
     // Process left child
     prettyPrint(tree->left, space);
-    // if(tree -> data == NULL)
-    //   return;
-    // if(tree->right->data != NULL)
-    //     prettyPrint(tree->right, l+1);
-    // else{
-    //   int i;
-    //   for(i = 0; i<l; i++)
-    //     printf(" ");
-    // }
-    // else if(tree->data)
 
 }
 
@@ -99,32 +88,14 @@ void deltree(node * tree)
     }
 }
 
-node* search(node ** tree, int val)
-{
-    if(!(*tree))
-    {
-        return NULL;
-    }
-
-    if(val < (*tree)->data)
-    {
-        search(&((*tree)->left), val);
-    }
-    else if(val > (*tree)->data)
-    {
-        search(&((*tree)->right), val);
-    }
-    else if(val == (*tree)->data)
-    {
-        return *tree;
-    }
-}
 TEST_CASE( "Lowest Common ancestors are computed", "[findLCA]" ) {
     node *root;
     node *tmp;
     //int i;
 
     root = NULL;
+    // test empty tree
+    //REQUIRE(findLCA(root,1,17) == NULL);
     /* Inserting nodes into tree */
     insert(&root, 3);
     insert(&root, 9);
@@ -145,31 +116,7 @@ TEST_CASE( "Lowest Common ancestors are computed", "[findLCA]" ) {
     REQUIRE(findLCA(root,9,1)->data == 3);
     REQUIRE(findLCA(root,15,4)->data == 9);
     REQUIRE(findLCA(root,1,1)->data == 1);
-
+    deltree(root);
     // fail case
     // REQUIRE(findLCA(root,1,17)->data == 5);
 }
-// int main()
-// {
-//     node *root;
-//     node *tmp;
-//     //int i;
-//
-//     root = NULL;
-//     /* Inserting nodes into tree */
-//     insert(&root, 3);
-//     insert(&root, 9);
-//     insert(&root, 4);
-//     insert(&root, 15);
-//     insert(&root, 6);
-//     insert(&root, 12);
-//     insert(&root, 17);
-//     insert(&root, 2);
-//     insert(&root, 1);
-//     prettyPrint(root, 0);
-//     /* Deleting all nodes of tree */
-//
-//     printf("LCA(1,17) = %d\n", findLCA(root,1,17)->data);
-//     deltree(root);
-//     return 0;
-// }
