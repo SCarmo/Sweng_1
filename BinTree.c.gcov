@@ -1,0 +1,148 @@
+        -:    0:Source:BinTree.c
+        -:    0:Graph:BinTree.gcno
+        -:    0:Data:BinTree.gcda
+        -:    0:Runs:1
+        -:    0:Programs:1
+        -:    1:#include<stdlib.h>
+        -:    2:#include<stdio.h>
+        -:    3:#define CATCH_CONFIG_MAIN  // This tells Catch to provide a main() - only do this in one cpp file
+        -:    4:#include "catch.hpp"
+        -:    5:#define COUNT 10
+        -:    6:// compile: g++ BinTree.c -o bin.exe
+        -:    7:
+        -:    8:struct bin_tree {
+        -:    9:int data;
+        -:   10:struct bin_tree * right, * left;
+        -:   11:};
+        -:   12:typedef struct bin_tree node;
+        -:   13:
+       26:   14:void insert(node ** tree, int val)
+        -:   15:{
+       26:   16:    node *temp = NULL;
+       26:   17:    if(!(*tree))
+        -:   18:    {
+        9:   19:        temp = (node *)malloc(sizeof(node));
+        9:   20:        temp->left = temp->right = NULL;
+        9:   21:        temp->data = val;
+        9:   22:        *tree = temp;
+        9:   23:        return;
+        -:   24:    }
+        -:   25:
+       17:   26:    if(val < (*tree)->data)
+        -:   27:    {
+        6:   28:        insert(&(*tree)->left, val);
+        -:   29:    }
+       11:   30:    else if(val > (*tree)->data)
+        -:   31:    {
+       11:   32:        insert(&(*tree)->right, val);
+        -:   33:    }
+        -:   34:
+        -:   35:}
+        -:   36:
+       97:   37:node *findLCA(node* root, int n1, int n2)
+        -:   38:{
+        -:   39:    // Base case
+       97:   40:    if (root == NULL) return NULL;
+        -:   41:
+        -:   42:    // If either n1 or n2 matches with root's key, report
+        -:   43:    // the presence by returning root (Note that if a key is
+        -:   44:    // ancestor of other, then the ancestor key becomes LCA
+       60:   45:    if (root->data == n1 || root->data == n2)
+       16:   46:        return root;
+        -:   47:
+        -:   48:    // Look for keys in left and right subtrees
+       44:   49:    node *left_lca  = findLCA(root->left, n1, n2);
+       44:   50:    node *right_lca = findLCA(root->right, n1, n2);
+        -:   51:
+        -:   52:    // If both of the above calls return Non-NULL, then one key
+        -:   53:    // is present in once subtree and other is present in other,
+        -:   54:    // So this node is the LCA
+       44:   55:    if (left_lca && right_lca)  return root;
+        -:   56:
+        -:   57:    // Otherwise check if left subtree or right subtree is LCA
+       37:   58:    return (left_lca != NULL)? left_lca: right_lca;
+        -:   59:}
+        -:   60:
+       19:   61:void prettyPrint(node * tree, int space){
+       19:   62:    if(tree == NULL)
+       10:   63:      return;
+        9:   64:    space += COUNT;
+        -:   65:
+        9:   66:    prettyPrint(tree->right, space);
+        -:   67:
+        -:   68:    // Print current node after space
+        -:   69:    // count
+        9:   70:    printf("\n");
+        -:   71:    int i;
+      179:   72:    for (i = COUNT; i < space; i++)
+      170:   73:        printf(" ");
+        9:   74:    printf("%d\n", tree->data);
+        -:   75:
+        -:   76:    // Process left child
+        9:   77:    prettyPrint(tree->left, space);
+        -:   78:
+        -:   79:}
+        -:   80:
+       19:   81:void deltree(node * tree)
+        -:   82:{
+       19:   83:    if (tree)
+        -:   84:    {
+        9:   85:        deltree(tree->left);
+        9:   86:        deltree(tree->right);
+        9:   87:        free(tree);
+        -:   88:    }
+       19:   89:}
+        -:   90:/*
+        -:   91:node* search(node ** tree, int val)
+        -:   92:{
+        -:   93:    if(!(*tree))
+        -:   94:    {
+        -:   95:        return NULL;
+        -:   96:    }
+        -:   97:
+        -:   98:    if(val < (*tree)->data)
+        -:   99:    {
+        -:  100:        search(&((*tree)->left), val);
+        -:  101:    }
+        -:  102:    else if(val > (*tree)->data)
+        -:  103:    {
+        -:  104:        search(&((*tree)->right), val);
+        -:  105:    }
+        -:  106:    else if(val == (*tree)->data)
+        -:  107:    {
+        -:  108:        return *tree;
+        -:  109:    }
+        -:  110:}
+        -:  111:*/
+        3:  112:TEST_CASE( "Lowest Common ancestors are computed", "[findLCA]" ) {
+        -:  113:    node *root;
+        -:  114:    node *tmp;
+        -:  115:    //int i;
+        -:  116:
+        1:  117:    root = NULL;
+        -:  118:    // test empty tree
+        -:  119:    //REQUIRE(findLCA(root,1,17) == NULL);
+        -:  120:    /* Inserting nodes into tree */
+        1:  121:    insert(&root, 3);
+        1:  122:    insert(&root, 9);
+        1:  123:    insert(&root, 4);
+        1:  124:    insert(&root, 15);
+        1:  125:    insert(&root, 6);
+        1:  126:    insert(&root, 12);
+        1:  127:    insert(&root, 17);
+        1:  128:    insert(&root, 2);
+        1:  129:    insert(&root, 1);
+        1:  130:    prettyPrint(root,0);
+        1:  131:    REQUIRE(findLCA(root,1,17)->data == 3);
+        1:  132:    REQUIRE(findLCA(root,12,17)->data == 15);
+        1:  133:    REQUIRE(findLCA(root,12,6)->data == 9);
+        1:  134:    REQUIRE(findLCA(root,3,3)->data == 3);
+        1:  135:    REQUIRE(findLCA(root,1,17)->data == 3);
+        1:  136:    REQUIRE(findLCA(root,1,9)->data == 3);
+        1:  137:    REQUIRE(findLCA(root,9,1)->data == 3);
+        1:  138:    REQUIRE(findLCA(root,15,4)->data == 9);
+        1:  139:    REQUIRE(findLCA(root,1,1)->data == 1);
+        1:  140:    deltree(root);
+        -:  141:    // fail case
+        -:  142:    // REQUIRE(findLCA(root,1,17)->data == 5);
+        4:  143:}
