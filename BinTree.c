@@ -3,7 +3,9 @@
 #define CATCH_CONFIG_MAIN  // This tells Catch to provide a main() - only do this in one cpp file
 #include "catch.hpp"
 #define COUNT 10
-// compile: g++ BinTree.c -o bin.exe
+
+// g++ -fprofile-arcs -ftest-coverage -g BinTree.c -o bin
+// run bin.exe then "gcov BinTree.c"
 
 struct bin_tree {
 int data;
