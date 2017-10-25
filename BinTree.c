@@ -1,6 +1,7 @@
 // THIS COMMENT SHOULD BE IN THE NEW BRANCH
 // for merge test
 
+const int STARTSIZE = 3.14;
 
 #include<stdlib.h>
 #include<stdio.h>
@@ -10,6 +11,40 @@
 
 // g++ -fprofile-arcs -ftest-coverage -g BinTree.c -o bin
 // run bin.exe then "gcov BinTree.c"
+struct graph *graph_create()
+{
+    struct graph *start, *eow;
+    start = graph_create_node(0);
+    if(start == NULL) return NULL;
+    eow = graph_create_node(YO_EOW);
+    if(eow == NULL) {
+        graph_free_node(start);
+        return NULL;
+    }
+    if(graph_add_node(start, eow)) {
+        graph_free_node(eow);
+        graph_free_node(start);
+        return NULL;
+    }
+    return start;
+}
+
+struct node *graph_create_node(char value)
+{
+    struct node *temp;
+    node = malloc(sizeof (struct node));
+    if(temp == NULL) return NULL;
+    temp->cursize = 0;
+    temp->maxsize = STARTSIZE;
+    temp->value = value;
+    temp->edges = malloc(STARTSIZE * sizeof (struct node *));
+    if(node->edges == NULL) {
+        free(node);
+        return NULL;
+    }
+    return node;
+}
+
 
 struct bin_tree {
 int data;
@@ -17,7 +52,7 @@ struct bin_tree * right, * left;
 };
 typedef struct bin_tree node;
 
-void insert(node ** tree, int val)
+void insertIntoBinTree(node ** tree, int val)
 {
     node *temp = NULL;
     if(!(*tree))
@@ -31,16 +66,16 @@ void insert(node ** tree, int val)
 
     if(val < (*tree)->data)
     {
-        insert(&(*tree)->left, val);
+        insertIntoBinTree(&(*tree)->left, val);
     }
     else if(val > (*tree)->data)
     {
-        insert(&(*tree)->right, val);
+        insertIntoBinTree(&(*tree)->right, val);
     }
 
 }
 
-node *findLCA(node* root, int n1, int n2)
+node *findBinTreeLCA(node* root, int n1, int n2)
 {
     // Base case
     if (root == NULL) return NULL;
@@ -52,8 +87,8 @@ node *findLCA(node* root, int n1, int n2)
         return root;
 
     // Look for keys in left and right subtrees
-    node *left_lca  = findLCA(root->left, n1, n2);
-    node *right_lca = findLCA(root->right, n1, n2);
+    node *left_lca  = findBinTreeLCA(root->left, n1, n2);
+    node *right_lca = findBinTreeLCA(root->right, n1, n2);
 
     // If both of the above calls return Non-NULL, then one key
     // is present in once subtree and other is present in other,
@@ -84,44 +119,44 @@ void prettyPrint(node * tree, int space){
 
 }
 
-void deltree(node * tree)
+void delBinTree(node * tree)
 {
     if (tree)
     {
-        deltree(tree->left);
-        deltree(tree->right);
+        delBinTree(tree->left);
+        delBinTree(tree->right);
         free(tree);
     }
 }
 
-TEST_CASE( "Lowest Common ancestors are computed", "[findLCA]" ) {
+TEST_CASE( "Lowest Common ancestors are computed", "[findBinTreeLCA]" ) {
     node *root;
     node *tmp;
     //int i;
 
     root = NULL;
     // test empty tree
-    /* Inserting nodes into tree */
-    insert(&root, 3);
-    insert(&root, 9);
-    insert(&root, 4);
-    insert(&root, 15);
-    insert(&root, 6);
-    insert(&root, 12);
-    insert(&root, 17);
-    insert(&root, 2);
-    insert(&root, 1);
+    /* insertIntoBinTreeing nodes into tree */
+    insertIntoBinTree(&root, 3);
+    insertIntoBinTree(&root, 9);
+    insertIntoBinTree(&root, 4);
+    insertIntoBinTree(&root, 15);
+    insertIntoBinTree(&root, 6);
+    insertIntoBinTree(&root, 12);
+    insertIntoBinTree(&root, 17);
+    insertIntoBinTree(&root, 2);
+    insertIntoBinTree(&root, 1);
     prettyPrint(root,0);
-    REQUIRE(findLCA(root,1,17)->data == 3);
-    REQUIRE(findLCA(root,12,17)->data == 15);
-    REQUIRE(findLCA(root,12,6)->data == 9);
-    REQUIRE(findLCA(root,3,3)->data == 3);
-    REQUIRE(findLCA(root,1,17)->data == 3);
-    REQUIRE(findLCA(root,1,9)->data == 3);
-    REQUIRE(findLCA(root,9,1)->data == 3);
-    REQUIRE(findLCA(root,15,4)->data == 9);
-    REQUIRE(findLCA(root,1,1)->data == 1);
-    deltree(root);
+    REQUIRE(findBinTreeLCA(root,1,17)->data == 3);
+    REQUIRE(findBinTreeLCA(root,12,17)->data == 15);
+    REQUIRE(findBinTreeLCA(root,12,6)->data == 9);
+    REQUIRE(findBinTreeLCA(root,3,3)->data == 3);
+    REQUIRE(findBinTreeLCA(root,1,17)->data == 3);
+    REQUIRE(findBinTreeLCA(root,1,9)->data == 3);
+    REQUIRE(findBinTreeLCA(root,9,1)->data == 3);
+    REQUIRE(findBinTreeLCA(root,15,4)->data == 9);
+    REQUIRE(findBinTreeLCA(root,1,1)->data == 1);
+    delBinTree(root);
     // fail case
-    // REQUIRE(findLCA(root,1,17)->data == 5);
+    // REQUIRE(findBinTreeLCA(root,1,17)->data == 5);
 }
