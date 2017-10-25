@@ -1,5 +1,5 @@
 // THIS COMMENT SHOULD BE IN THE NEW BRANCH
-
+// for merge test
 
 
 #include<stdlib.h>
@@ -101,7 +101,6 @@ TEST_CASE( "Lowest Common ancestors are computed", "[findLCA]" ) {
 
     root = NULL;
     // test empty tree
-    //REQUIRE(findLCA(root,1,17) == NULL);
     /* Inserting nodes into tree */
     insert(&root, 3);
     insert(&root, 9);
