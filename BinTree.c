@@ -1,7 +1,7 @@
 // THIS COMMENT SHOULD BE IN THE NEW BRANCH
 // for merge test
 
-const int STARTSIZE = 3.14;
+const int YO_STARTSIZE = 16;
 
 #include<stdlib.h>
 #include<stdio.h>
@@ -11,39 +11,16 @@ const int STARTSIZE = 3.14;
 
 // g++ -fprofile-arcs -ftest-coverage -g BinTree.c -o bin
 // run bin.exe then "gcov BinTree.c"
-struct graph *graph_create()
-{
-    struct graph *start, *eow;
-    start = graph_create_node(0);
-    if(start == NULL) return NULL;
-    eow = graph_create_node(YO_EOW);
-    if(eow == NULL) {
-        graph_free_node(start);
-        return NULL;
-    }
-    if(graph_add_node(start, eow)) {
-        graph_free_node(eow);
-        graph_free_node(start);
-        return NULL;
-    }
-    return start;
-}
+struct yonode {
+    char value;
+    int cursize, maxsize;
+    struct yonode **edges;
+};
 
-struct node *graph_create_node(char value)
-{
-    struct node *temp;
-    node = malloc(sizeof (struct node));
-    if(temp == NULL) return NULL;
-    temp->cursize = 0;
-    temp->maxsize = STARTSIZE;
-    temp->value = value;
-    temp->edges = malloc(STARTSIZE * sizeof (struct node *));
-    if(node->edges == NULL) {
-        free(node);
-        return NULL;
-    }
-    return node;
-}
+struct yowordlist {
+    int cursize, maxsize;
+    char **words;
+};
 
 
 struct bin_tree {
@@ -51,6 +28,55 @@ int data;
 struct bin_tree * right, * left;
 };
 typedef struct bin_tree node;
+
+struct yonode *yodawg_create()
+{
+    struct yonode *start, *eow;
+    start = yodawg_create_node(0);
+    if(start == NULL) return NULL;
+    eow = yodawg_create_node(YO_EOW);
+    if(eow == NULL) {
+        yodawg_free_node(start);
+        return NULL;
+    }
+    if(yodawg_add_node(start, eow)) {
+        yodawg_free_node(eow);
+        yodawg_free_node(start);
+        return NULL;
+    }
+    return start;
+}
+
+struct yonode *yodawg_create_node(char value)
+{
+    struct yonode *node;
+    node = malloc(sizeof (struct yonode));
+    if(node == NULL) return NULL;
+    node->cursize = 0;
+    node->maxsize = YO_STARTSIZE;
+    node->value = value;
+    node->edges = malloc(YO_STARTSIZE * sizeof (struct yonode *));
+    if(node->edges == NULL) {
+        free(node);
+        return NULL;
+    }
+    return node;
+}
+
+int yodawg_add_node(struct yonode *parent, struct yonode *child)
+{
+    if (parent->edges == NULL) {
+        parent->edges = malloc(YO_STARTSIZE * sizeof (struct yonode *));
+        if(parent->edges == NULL) return -1;
+    }
+    else if (parent->cursize == parent->maxsize) {
+        parent->maxsize *= 2;
+        parent->edges = realloc(parent->edges, parent->maxsize);
+        if(parent->edges == NULL) return -1;
+    }
+    parent->edges[parent->cursize++] = child;
+    return 0;
+}
 
 void insertIntoBinTree(node ** tree, int val)
 {
