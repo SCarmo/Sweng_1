@@ -7,6 +7,7 @@ const int STARTSIZE = 16;
 #define COUNT 10
 #include "dawg.h"
 
+// for testing
 // g++ -fprofile-arcs -ftest-coverage -g BinTree.c -o bin
 // run bin.exe then "gcov BinTree.c"
 
@@ -290,9 +291,6 @@ void prettyPrint(node * tree, int space){
   space += COUNT;
 
   prettyPrint(tree->right, space);
-
-  // Print current node after space
-  // count
   printf("\n");
   int i;
   for (i = COUNT; i < space; i++)
@@ -331,21 +329,19 @@ int main(int argc, char **argv){
   dawg_add_string(dawg, "barf");
   dawg_add_string(dawg, "quxxxx");
   dawg_add_string(dawg, "bbq");
-
-  if(strings->cursize < 0)
+  //printf(" Hi there: %s\n",dawg -> value);
+  /*if(strings->cursize < 0)
   printf("Prefix not in dawg.\n");
   else
   printf("Found %d matching strings:\n", strings->cursize);
 
   dawg_free_dawg(dawg);
 
-  for(j = 0; j < strings->cursize; j++)
-  printf("%s\n", strings->words[j]);
 
   dawg_free_wordlist(strings);
+*/
   node *root;
   node *tmp;
-  //int i;
 
   root = NULL;
   // test empty tree
@@ -359,18 +355,6 @@ int main(int argc, char **argv){
   insertIntoBinTree(&root, 17);
   insertIntoBinTree(&root, 2);
   insertIntoBinTree(&root, 1);
-  //prettyPrint(root,0);
-  /*REQUIRE(findBinTreeLCA(root,1,17)->data == 3);
-  REQUIRE(findBinTreeLCA(root,12,17)->data == 15);
-  REQUIRE(findBinTreeLCA(root,12,6)->data == 9);
-  REQUIRE(findBinTreeLCA(root,3,3)->data == 3);
-  REQUIRE(findBinTreeLCA(root,1,17)->data == 3);
-  REQUIRE(findBinTreeLCA(root,1,9)->data == 3);
-  REQUIRE(findBinTreeLCA(root,9,1)->data == 3);
-  REQUIRE(findBinTreeLCA(root,15,4)->data == 9);
-  REQUIRE(findBinTreeLCA(root,1,1)->data == 1);*/
   delBinTree(root);
-  // fail case
-  // REQUIRE(findBinTreeLCA(root,1,17)->data == 5);
   return 0;
 }
