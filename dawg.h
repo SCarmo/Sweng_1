@@ -23,7 +23,7 @@ struct wordlist {
     int cursize, maxsize;
     char **words;
 };
-/*
+
 struct node *dawg_create();
 struct node *dawg_create_node(char);
 int dawg_add_node(struct node *, struct node *);
@@ -36,6 +36,4 @@ int dawg_free_dawg(struct node *);
 int dawg_build_strings(struct node *, const char *, struct wordlist *);
 struct wordlist *dawg_create_wordlist(int);
 void dawg_free_wordlist(struct wordlist *);
-struct wordlist *dawg_find_strings(struct node *, char *);
-*/
 #endif
