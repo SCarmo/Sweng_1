@@ -36,4 +36,5 @@ int dawg_free_dawg(struct node *);
 int dawg_build_strings(struct node *, const char *, struct wordlist *);
 struct wordlist *dawg_create_wordlist(int);
 void dawg_free_wordlist(struct wordlist *);
+struct wordlist *dawg_find_strings(struct node *, char *);
 #endif
