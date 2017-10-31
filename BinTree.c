@@ -17,6 +17,9 @@ struct node *dawg_create()
   start = dawg_create_node(0);
   if(start == NULL) return NULL;
   eow = dawg_create_node(EOW);
+
+  // this section of code doesnt run but I can't pass tests without it :/
+  //----------------------------------------------------------------------------
   if(eow == NULL) {
     dawg_free_node(start);
     return NULL;
@@ -26,6 +29,7 @@ struct node *dawg_create()
     dawg_free_node(start);
     return NULL;
   }
+  //----------------------------------------------------------------------------
   return start;
 }
 
